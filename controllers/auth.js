@@ -42,6 +42,7 @@ exports.postLogin = (req, res, next) => {
       }
       req.flash("success", { msg: "Success! You are logged in." });
       res.redirect(req.session.returnTo || "/clients");
+      //THIS IS WHERE THE POSTLOGIN TAKES YOU
     });
   })(req, res, next);
 };
