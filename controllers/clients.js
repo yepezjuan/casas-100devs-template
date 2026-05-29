@@ -21,10 +21,11 @@ module.exports = {
   createClient: async (req, res) => {
     try {
       await Client.create({
-        name: req.body.name,
-        phone: req.body.phone,
-        address: req.body.address,
+        name: req.body.clientName,
+        phone: req.body.clientPhone,
+        address: req.body.clientAddress,
         completed: false,
+        userId: req.user.id,
       });
       console.log("new client has been added!");
       res.redirect("/clients");

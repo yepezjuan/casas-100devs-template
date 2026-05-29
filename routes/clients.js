@@ -5,4 +5,6 @@ const { ensureAuth } = require("../middleware/auth");
 
 router.get("/", ensureAuth, clientsController.getClients);
 
+router.post("/createClient", clientsController.createClient);
+
 module.exports = router;

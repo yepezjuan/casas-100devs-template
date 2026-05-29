@@ -1,4 +1,3 @@
-const { request } = require("express");
 const mongoose = require("mongoose");
 
 const ClientSchema = new mongoose.Schema({
@@ -12,9 +11,15 @@ const ClientSchema = new mongoose.Schema({
   },
   address: {
     type: String,
+    required: true,
   },
   completed: {
     type: Boolean,
+    required: true,
+  },
+
+  userId: {
+    type: String,
     required: true,
   },
 });

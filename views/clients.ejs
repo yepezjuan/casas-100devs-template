@@ -11,12 +11,21 @@
     <h1>YOUR CLIENTS</h1>
     <ul>
     <% clients.forEach( el => { %>
-            <li class='' data-id='<%=el._id%>'>
+            <li class='clientName' data-id='<%=el._id%>'>
                 <span class='<%= el.completed === true ? 'completed' : 'not'%>'><%= el.name %></span>
-                <span class='del'> Delete </span>
+                
             </li>
     <% }) %>    
     </ul>
+
+    <h2><%= user.userName%> has <%= left%> clients</h2>
+
+    <form action="/clients/createClient" method="POST">
+      <input type="text" placeholder="Name" name="clientName">
+      <input type="text" placeholder="Phone" name="clientPhone">
+      <input type="text" placeholder="Address" name="clientAddress">
+      <input type="submit">
+    </form>
 
     <a href="/logout">Logout</a>
 
