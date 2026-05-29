@@ -4,3 +4,5 @@ const clientsController = require("../controllers/clients");
 const { ensureAuth } = require("../middleware/auth");
 
 router.get("/", ensureAuth, clientsController.getClients);
+
+module.exports = router;
