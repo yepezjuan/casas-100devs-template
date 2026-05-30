@@ -33,4 +33,16 @@ module.exports = {
       console.error(err);
     }
   },
+
+  deleteClient: async (req, res) => {
+    try {
+      await Client.findOneAndDelete({
+        _id: req.body.clientIdFromJSFile,
+      });
+      console.log("Deleted Client");
+      res.json("Deleted it");
+    } catch (err) {
+      console.error(err);
+    }
+  },
 };

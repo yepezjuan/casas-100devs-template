@@ -13,6 +13,9 @@
     <% clients.forEach( el => { %>
             <li class='clientName' data-id='<%=el._id%>'>
                 <span class='<%= el.completed === true ? 'completed' : 'not'%>'><%= el.name %></span>
+                <span><%= el.address %></span>
+                <span><%= el.phone %></span>
+                <span class="deleteClient">Delete</span>
                 
             </li>
     <% }) %>    

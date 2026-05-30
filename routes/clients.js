@@ -7,4 +7,6 @@ router.get("/", ensureAuth, clientsController.getClients);
 
 router.post("/createClient", clientsController.createClient);
 
+router.delete("/deleteClient", clientsController.deleteClient);
+
 module.exports = router;
