@@ -40,7 +40,7 @@ module.exports = {
         _id: req.body.clientIdFromJSFile,
       });
       console.log("Deleted Client");
-      res.json("Deleted it");
+      res.json("Deleted it"); // need to respond back with res, since we are doing a call back
     } catch (err) {
       console.error(err);
     }
