@@ -61,7 +61,7 @@ exports.logout = (req, res) => {
 
 exports.getSignup = (req, res) => {
   if (req.user) {
-    return res.redirect("/todos");
+    return res.redirect("/clients");
   }
   res.render("signup", {
     title: "Create Account",
@@ -113,7 +113,7 @@ exports.postSignup = (req, res, next) => {
           if (err) {
             return next(err);
           }
-          res.redirect("/todos");
+          res.redirect("/clients");
         });
       });
     },
