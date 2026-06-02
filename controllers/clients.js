@@ -26,6 +26,7 @@ module.exports = {
         address: req.body.clientAddress,
         completed: false,
         userId: req.user.id,
+        day: req.body.clientDay,
       });
       console.log("new client has been added!");
       res.redirect("/clients");

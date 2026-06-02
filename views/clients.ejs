@@ -15,6 +15,7 @@
                 <span class='<%= el.completed === true ? 'completed' : 'not'%>'><%= el.name %></span>
                 <span><%= el.address %></span>
                 <span><%= el.phone %></span>
+                <span><%= el.day %></span>
                 <span class="deleteClient">Delete</span>
                 
             </li>
@@ -27,6 +28,14 @@
       <input type="text" placeholder="Name" name="clientName">
       <input type="text" placeholder="Phone" name="clientPhone">
       <input type="text" placeholder="Address" name="clientAddress">
+      <select name="clientDay">
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+        <option value="Saturday">Saturday</option>
+      </select>
       <input type="submit">
     </form>
 
