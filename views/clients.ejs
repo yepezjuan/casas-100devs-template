@@ -9,20 +9,85 @@
   </head>
   <body>
     <h1>YOUR CLIENTS</h1>
+     <h2><%= user.userName%> has <%= left%> clients</h2>
     <ul>
     <% clients.forEach( el => { %>
             <li class='clientName' data-id='<%=el._id%>'>
                 <span class='<%= el.completed === true ? 'completed' : 'not'%>'><%= el.name %></span>
                 <span><%= el.address %></span>
                 <span><%= el.phone %></span>
-                <span><%= el.day %></span>
+                <span class = '<%= el.day%>' > <%= el.day %></span>
                 <span class="deleteClient">Delete</span>
-                
             </li>
     <% }) %>    
     </ul>
 
-    <h2><%= user.userName%> has <%= left%> clients</h2>
+    <h3>Monday Clients: </h3>
+    <ul>
+      <% mondayClients.forEach( el => { %>
+            <li  data-id='<%=el._id%>'>
+                <span><%= el.name %></span>
+                <span><%= el.address %></span>
+                <span><%= el.phone %></span>
+            </li>
+    <% }) %>    
+    </ul>
+
+    <h3>Tuesday Clients: </h3>
+    <ul>
+      <% tuesdayClients.forEach( el => { %>
+            <li  data-id='<%=el._id%>'>
+                <span><%= el.name %></span>
+                <span><%= el.address %></span>
+                <span><%= el.phone %></span>
+            </li>
+    <% }) %>    
+    </ul>
+
+    <h3>Wednesday Clients: </h3>
+    <ul>
+      <% wednesdayClients.forEach( el => { %>
+            <li  data-id='<%=el._id%>'>
+                <span><%= el.name %></span>
+                <span><%= el.address %></span>
+                <span><%= el.phone %></span>
+            </li>
+    <% }) %>    
+    </ul>
+
+    <h3>Thursday Clients: </h3>
+    <ul>
+      <% thursdayClients.forEach( el => { %>
+            <li  data-id='<%=el._id%>'>
+                <span><%= el.name %></span>
+                <span><%= el.address %></span>
+                <span><%= el.phone %></span>
+            </li>
+    <% }) %>    
+    </ul>
+
+    <h3>Friday Clients: </h3>
+    <ul>
+      <% fridayClients.forEach( el => { %>
+            <li  data-id='<%=el._id%>'>
+                <span><%= el.name %></span>
+                <span><%= el.address %></span>
+                <span><%= el.phone %></span>
+            </li>
+    <% }) %>    
+    </ul>
+
+    <h3>Saturday Clients: </h3>
+    <ul>
+      <% saturdayClients.forEach( el => { %>
+            <li  data-id='<%=el._id%>'>
+                <span><%= el.name %></span>
+                <span><%= el.address %></span>
+                <span><%= el.phone %></span>
+            </li>
+    <% }) %>    
+    </ul>
+   
 
     <form action="/clients/createClient" method="POST">
       <input type="text" placeholder="Name" name="clientName">
