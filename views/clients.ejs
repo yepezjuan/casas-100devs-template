@@ -22,6 +22,8 @@
     <% }) %>    
     </ul>
 
+  <%# ------- WEEKLY CLIENT LIST ------%>
+<div>
     <h3>Monday Clients: </h3>
     <ul>
       <% mondayClients.forEach( el => { %>
@@ -87,7 +89,7 @@
             </li>
     <% }) %>    
     </ul>
-   
+   </div>
 
     <form action="/clients/createClient" method="POST">
       <input type="text" placeholder="Name" name="clientName">

@@ -1,4 +1,5 @@
 const Client = require("../models/Client");
+const Geo = require("../utils/geocode");
 module.exports = {
   getClients: async (req, res) => {
     console.log(req.user);
@@ -51,18 +52,27 @@ module.exports = {
   },
 
   createClient: async (req, res) => {
+    const { clientName, clientPhone, clientAddress, clientDay } = req.body;
     try {
+      const { lat, lng } = await Geo.geocodeAddress(clientAddress);
       await Client.create({
-        name: req.body.clientName,
-        phone: req.body.clientPhone,
-        address: req.body.clientAddress,
+        name: clientName,
+        phone: clientPhone,
+        address: clientAddress,
         completed: false,
         userId: req.user.id,
-        day: req.body.clientDay,
+        day: clientDay,
+        lat,
+        lng,
       });
       console.log("new client has been added!");
       res.redirect("/clients");
     } catch (err) {
+      console.error("Geocoding failed:", err.message);
+      req.flash(
+        "error",
+        "Could not geocode that address. Please check it and try again.",
+      );
       console.error(err);
     }
   },
