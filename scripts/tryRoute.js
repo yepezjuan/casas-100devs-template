@@ -8,6 +8,7 @@
 // since the legacy @googlemaps SDK doesn't speak it. Once this proves out, the
 // logic gets ported into utils/routing.js.
 
+//TODO: need to test the routing feature some more before adding to project
 require("dotenv").config({ path: "./config/.env" }); // same path as server.js
 
 const axios = require("axios");
@@ -25,11 +26,10 @@ const CLIENTS = [
 ];
 
 // Routes API TRAFFIC_AWARE needs a future departure time.
-const DEPARTURE_TIME = "2026-06-16T15:00:00Z"; // 8:00 AM PDT
+const DEPARTURE_TIME = "2026-06-19T15:00:00Z"; // 8:00 AM PDT
 // -----------------------------------------------------------------------------
 
-const ROUTES_URL =
-  "https://routes.googleapis.com/directions/v2:computeRoutes";
+const ROUTES_URL = "https://routes.googleapis.com/directions/v2:computeRoutes";
 
 const waypoint = (p) => ({
   location: { latLng: { latitude: p.lat, longitude: p.lng } },
@@ -74,7 +74,8 @@ async function makeRoute(clients, depot) {
   if (!route) throw new Error("Routes API returned no routes.");
 
   // optimizedIntermediateWaypointIndex[k] = original index of the k-th visited stop.
-  const order = route.optimizedIntermediateWaypointIndex || clients.map((_, i) => i);
+  const order =
+    route.optimizedIntermediateWaypointIndex || clients.map((_, i) => i);
   const orderedClients = order.map((i) => clients[i]);
 
   const totalDistanceMeters = route.distanceMeters;
@@ -92,7 +93,12 @@ async function makeRoute(clients, depot) {
     schedule.push({ name: orderedClients[k].name, arrive, depart });
   }
 
-  return { orderedClients, totalDistanceMeters, totalDurationSeconds, schedule };
+  return {
+    orderedClients,
+    totalDistanceMeters,
+    totalDurationSeconds,
+    schedule,
+  };
 }
 
 function buildDeepLink(depot, orderedClients) {
@@ -117,7 +123,9 @@ const clock = (d) =>
   try {
     const r = await makeRoute(CLIENTS, DEPOT);
 
-    console.log("\n=== Optimized round trip (Pasadena/Altadena) — Routes API ===");
+    console.log(
+      "\n=== Optimized round trip (Pasadena/Altadena) — Routes API ===",
+    );
     console.log(
       `Total: ${miles(r.totalDistanceMeters)} mi, ${mins(
         r.totalDurationSeconds,
@@ -138,7 +146,11 @@ const clock = (d) =>
     console.log(buildDeepLink(DEPOT, r.orderedClients) + "\n");
   } catch (err) {
     console.error("\nmakeRoute failed:", err.message);
-    if (/PERMISSION_DENIED|not authorized|API key|SERVICE_DISABLED/i.test(err.message)) {
+    if (
+      /PERMISSION_DENIED|not authorized|API key|SERVICE_DISABLED/i.test(
+        err.message,
+      )
+    ) {
       console.error(
         "Hint: enable the *Routes API* on the project AND allow it under the " +
           "key's API restrictions (separate from the legacy Directions API).",

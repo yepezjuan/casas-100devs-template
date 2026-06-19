@@ -51,6 +51,18 @@ module.exports = {
     }
   },
 
+  getEdit: async (req, res) => {
+    try {
+      const client = await Client.findOne({ _id: req.params.id });
+      res.render("edit.ejs", {
+        client: client,
+        user: req.user,
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  },
+
   createClient: async (req, res) => {
     const { clientName, clientPhone, clientAddress, clientDay } = req.body;
     try {
@@ -67,6 +79,34 @@ module.exports = {
       });
       console.log("new client has been added!");
       res.redirect("/clients");
+    } catch (err) {
+      console.error("Geocoding failed:", err.message);
+      req.flash(
+        "error",
+        "Could not geocode that address. Please check it and try again.",
+      );
+      console.error(err);
+    }
+  },
+
+  updateClient: async (req, res) => {
+    const { clientId, clientName, clientPhone, clientAddress, clientDay } =
+      req.body;
+    try {
+      const { lat, lng } = await Geo.geocodeAddress(clientAddress);
+      await Client.findOneAndUpdate(
+        { _id: clientId },
+        {
+          name: clientName,
+          phone: clientPhone,
+          address: clientAddress,
+          day: clientDay,
+          lat,
+          lng,
+        },
+      );
+      console.log("Client has been updated!");
+      res.json("Updated it");
     } catch (err) {
       console.error("Geocoding failed:", err.message);
       req.flash(

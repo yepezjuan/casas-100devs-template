@@ -17,6 +17,7 @@
                 <span><%= el.address %></span>
                 <span><%= el.phone %></span>
                 <span class = '<%= el.day%>' > <%= el.day %></span>
+                <a href="/clients/edit/<%= el._id %>">Edit</a>
                 <span class="deleteClient">Delete</span>
             </li>
     <% }) %>    
