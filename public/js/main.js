@@ -105,6 +105,45 @@ async function updateClient() {
   }
 }
 
+// --- Route optimizer buttons ---
+
+const clock = (iso) =>
+  new Date(iso).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+
+const miles = (m) => (m / 1609.344).toFixed(1);
+const mins = (s) => Math.round(s / 60);
+
+document.querySelectorAll(".route-btn").forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    const day = btn.dataset.day;
+    const resultDiv = document.getElementById("route-result");
+    resultDiv.innerHTML = `<p>Loading ${day} route…</p>`;
+    try {
+      const res = await fetch(`/clients/route/${day}`);
+      const data = await res.json();
+      if (!res.ok) {
+        resultDiv.innerHTML = `<p>Error: ${data.error}</p>`;
+        return;
+      }
+      const rows = data.schedule
+        .map(
+          (s, i) =>
+            `<tr><td>${i + 1}</td><td>${s.name}</td><td>${clock(s.arrive)}</td><td>${clock(s.depart)}</td></tr>`
+        )
+        .join("");
+      resultDiv.innerHTML = `
+        <h4>${day} — ${miles(data.totalDistanceMeters)} mi, ${mins(data.totalDurationSeconds)} min driving</h4>
+        <table>
+          <thead><tr><th>#</th><th>Client</th><th>Arrive</th><th>Depart</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+        <p><a href="${data.deepLink}" target="_blank">Open in Google Maps</a></p>`;
+    } catch (err) {
+      resultDiv.innerHTML = `<p>Error: ${err.message}</p>`;
+    }
+  });
+});
+
 async function delClient() {
   const clientId = this.parentNode.dataset.id;
   try {

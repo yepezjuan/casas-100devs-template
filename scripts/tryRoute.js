@@ -26,6 +26,7 @@ const CLIENTS = [
 ];
 
 // Routes API TRAFFIC_AWARE needs a future departure time.
+// need to get current date to make route
 const DEPARTURE_TIME = "2026-06-19T15:00:00Z"; // 8:00 AM PDT
 // -----------------------------------------------------------------------------
 

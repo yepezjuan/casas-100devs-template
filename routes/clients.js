@@ -7,10 +7,12 @@ router.get("/", ensureAuth, clientsController.getClients);
 
 router.get("/edit/:id", ensureAuth, clientsController.getEdit);
 
-router.post("/createClient", clientsController.createClient);
+router.get("/route/:day", ensureAuth, clientsController.getRoute);
 
-router.put("/updateClient", clientsController.updateClient);
+router.post("/createClient", ensureAuth, clientsController.createClient);
 
-router.delete("/deleteClient", clientsController.deleteClient);
+router.put("/updateClient", ensureAuth, clientsController.updateClient);
+
+router.delete("/deleteClient", ensureAuth, clientsController.deleteClient);
 
 module.exports = router;
