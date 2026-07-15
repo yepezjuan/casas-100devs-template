@@ -39,7 +39,7 @@
                 <span class='<%= el.completed === true ? 'completed' : 'not'%>'><%= el.name %></span>
                 <span><%= el.address %></span>
                 <span><%= el.phone %></span>
-                <span class = '<%= el.day%>' > <%= el.day %></span>
+                <span class="day-tag <%= el.day %>"><%= el.day %></span>
                 <a href="/clients/edit/<%= el._id %>">Edit</a>
                 <span class="deleteClient">Delete</span>
             </li>
