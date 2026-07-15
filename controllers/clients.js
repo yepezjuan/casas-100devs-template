@@ -16,6 +16,27 @@ module.exports = {
       const fridayClients = await Client.find({ userId: req.user.id, day: "Friday" });
       const saturdayClients = await Client.find({ userId: req.user.id, day: "Saturday" });
       const clientsLeft = await Client.countDocuments({ userId: req.user.id, completed: false });
+      const today = new Date().toLocaleDateString("en-US", { weekday: "long" });
+
+      let todayRoute = null;
+      if (VALID_DAYS.includes(today)) {
+        try {
+          const result = await Routing.getRouteForDay(today, req.user.id);
+          const clock = (d) => new Date(d).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+          todayRoute = {
+            schedule: result.schedule.map((s) => ({
+              name: s.name,
+              arrive: clock(s.arrive),
+              depart: clock(s.depart),
+            })),
+            miles: (result.totalDistanceMeters / 1609.344).toFixed(1),
+            minutes: Math.round(result.totalDurationSeconds / 60),
+            deepLink: result.deepLink,
+          };
+        } catch (err) {
+          todayRoute = { error: err.message };
+        }
+      }
 
       res.render("clients.ejs", {
         clients,
@@ -26,6 +47,9 @@ module.exports = {
         thursdayClients,
         fridayClients,
         saturdayClients,
+        today,
+        validDays: VALID_DAYS,
+        todayRoute,
         user: req.user,
       });
     } catch (err) {

@@ -10,6 +10,29 @@
   <body>
     <h1>CASAS DASHBOARD</h1>
      <h2><%= user.userName%> has <%= left%> clients</h2>
+
+  <%# ------- TODAY'S ROUTE ------%>
+  <div>
+    <% if (!validDays.includes(today)) { %>
+      <p>No clients scheduled today — enjoy your day off!</p>
+    <% } else if (todayRoute.error) { %>
+      <h3>Today's Route (<%= today %>)</h3>
+      <p>Error: <%= todayRoute.error %></p>
+    <% } else { %>
+      <h3>Today's Route (<%= today %>)</h3>
+      <h4><%= today %> — <%= todayRoute.miles %> mi, <%= todayRoute.minutes %> min driving</h4>
+      <table>
+        <thead><tr><th>#</th><th>Client</th><th>Arrive</th><th>Depart</th></tr></thead>
+        <tbody>
+        <% todayRoute.schedule.forEach((s, i) => { %>
+          <tr><td><%= i + 1 %></td><td><%= s.name %></td><td><%= s.arrive %></td><td><%= s.depart %></td></tr>
+        <% }) %>
+        </tbody>
+      </table>
+      <p><a href="<%= todayRoute.deepLink %>" target="_blank">Open in Google Maps</a></p>
+    <% } %>
+  </div>
+
     <ul>
     <% clients.forEach( el => { %>
             <li class='clientName' data-id='<%=el._id%>'>
