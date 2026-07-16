@@ -1,5 +1,46 @@
+body {
+  background-color: #f5f6f8;
+  margin: 0;
+}
+
 h1 {
   color: red;
+}
+
+.dashboard {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+}
+
+.logout-link {
+  font-size: 14px;
+  color: #555;
+}
+
+.card {
+  background-color: #fff;
+  border: 1px solid #e2e2e2;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  padding: 20px 24px;
+}
+
+.card-title {
+  margin-top: 0;
 }
 .completed {
   text-decoration: line-through;
@@ -13,30 +54,31 @@ h1 {
   border-radius: 6px;
   padding: 2px 8px;
   display: inline-block;
+  color: #4a4a4a;
 }
 
 .Monday {
-  background-color: red;
+  background-color: #e6b8bb;
 }
 
 .Tuesday {
-  background-color: yellow;
+  background-color: #eddca0;
 }
 
 .Wednesday {
-  background-color: orange;
+  background-color: #f0cca4;
 }
 
 .Thursday {
-  background-color: aqua;
+  background-color: #a8d4d1;
 }
 
 .Friday {
-  background-color: green;
+  background-color: #b7d4ac;
 }
 
 .Saturday {
-  background-color: fuchsia;
+  background-color: #d3b8d6;
 }
 
 .client-form {
@@ -102,4 +144,24 @@ h1 {
 
 .client-table tbody tr:nth-child(even) {
   background-color: #f2f2f2;
+}
+
+.client-action-btn {
+  display: inline-block;
+  border: none;
+  border-radius: 6px;
+  padding: 2px 10px;
+  font-size: 14px;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  color: #fff;
+}
+
+.edit-btn {
+  background-color: #4a90d9;
+}
+
+.delete-btn {
+  background-color: #d9534f;
 }

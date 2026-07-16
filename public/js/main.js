@@ -2,7 +2,7 @@ const deleteBtn = document.querySelectorAll(".del");
 const todoItem = document.querySelectorAll("span.not");
 const todoComplete = document.querySelectorAll("span.completed");
 
-const deleteClient = document.querySelectorAll("span.deleteClient");
+const deleteClient = document.querySelectorAll(".deleteClient");
 
 const saveClient = document.querySelector(".saveClient");
 
@@ -152,14 +152,18 @@ document.querySelectorAll(".filter-tab").forEach((tab) => {
     tab.classList.add("active");
 
     const day = tab.dataset.day;
-    document.querySelectorAll(".client-table tbody tr").forEach((row) => {
+    document.querySelectorAll("#clients-list-table tbody tr").forEach((row) => {
       row.style.display = day === "All" || row.dataset.day === day ? "" : "none";
     });
   });
 });
 
 async function delClient() {
-  const clientId = this.parentNode.dataset.id;
+  const clientId = this.dataset.id;
+  const clientName = this.dataset.name;
+  if (!confirm(`Delete ${clientName}? This can't be undone.`)) {
+    return;
+  }
   try {
     const response = await fetch("clients/deleteClient", {
       method: "delete",

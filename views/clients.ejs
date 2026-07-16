@@ -4,114 +4,124 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>CASAS</title>
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <h1>CASAS DASHBOARD</h1>
-     
-  <%# ------- TODAY'S ROUTE ------%>
-  <div>
-    <% if (!validDays.includes(today)) { %>
-      <p>No clients scheduled today — enjoy your day off!</p>
-    <% } else if (todayRoute.error) { %>
-      <h2>Today's Route (<%= today %>)</h2>
-      <p>Error: <%= todayRoute.error %></p>
-    <% } else { %>
-      <h2>Today's Route (<%= today %>)</h2>
-      <h4><%= today %> — <%= todayRoute.miles %> mi, <%= todayRoute.minutes %> min driving</h4>
-      <table class="client-table">
-        <thead><tr><th>#</th><th>Client</th><th>Arrive</th><th>Depart</th></tr></thead>
-        <tbody>
-        <% todayRoute.schedule.forEach((s, i) => { %>
-          <tr><td><%= i + 1 %></td><td><%= s.name %></td><td><%= s.arrive %></td><td><%= s.depart %></td></tr>
-        <% }) %>
-        </tbody>
-      </table>
-      <p><a href="<%= todayRoute.deepLink %>" target="_blank">Open in Google Maps</a></p>
-    <% } %>
-  </div>
+    <div class="dashboard">
+      <header class="dashboard-header">
+        <h1>CASAS DASHBOARD</h1>
+        <a href="/logout" class="logout-link">Logout</a>
+      </header>
 
-  <h2><%= user.userName%> HAS <%= left%> Clients</h2>
+      <%# ------- TODAY'S ROUTE ------%>
+      <section class="card">
+        <% if (!validDays.includes(today)) { %>
+          <h2 class="card-title">Today's Route</h2>
+          <p>No clients scheduled today — enjoy your day off!</p>
+        <% } else if (todayRoute.error) { %>
+          <h2 class="card-title">Today's Route (<%= today %>)</h2>
+          <p>Error: <%= todayRoute.error %></p>
+        <% } else { %>
+          <h2 class="card-title">Today's Route (<%= today %>)</h2>
+          <h4><%= today %> — <%= todayRoute.miles %> mi, <%= todayRoute.minutes %> min driving</h4>
+          <table class="client-table">
+            <thead><tr><th>#</th><th>Client</th><th>Arrive</th><th>Depart</th></tr></thead>
+            <tbody>
+            <% todayRoute.schedule.forEach((s, i) => { %>
+              <tr><td><%= i + 1 %></td><td><%= s.name %></td><td><%= s.arrive %></td><td><%= s.depart %></td></tr>
+            <% }) %>
+            </tbody>
+          </table>
+          <p><a href="<%= todayRoute.deepLink %>" target="_blank">Open in Google Maps</a></p>
+        <% } %>
+      </section>
 
-    <div id="day-filter-tabs">
-      <button class="filter-tab active" data-day="All">All</button>
-      <button class="filter-tab" data-day="Monday">Mon</button>
-      <button class="filter-tab" data-day="Tuesday">Tue</button>
-      <button class="filter-tab" data-day="Wednesday">Wed</button>
-      <button class="filter-tab" data-day="Thursday">Thu</button>
-      <button class="filter-tab" data-day="Friday">Fri</button>
-      <button class="filter-tab" data-day="Saturday">Sat</button>
+      <%# ------- CLIENT LIST ------%>
+      <section class="card">
+        <h2 class="card-title"><%= user.userName%> HAS <%= left%> Clients</h2>
+
+        <div id="day-filter-tabs">
+          <button class="filter-tab active" data-day="All">All</button>
+          <button class="filter-tab" data-day="Monday">Mon</button>
+          <button class="filter-tab" data-day="Tuesday">Tue</button>
+          <button class="filter-tab" data-day="Wednesday">Wed</button>
+          <button class="filter-tab" data-day="Thursday">Thu</button>
+          <button class="filter-tab" data-day="Friday">Fri</button>
+          <button class="filter-tab" data-day="Saturday">Sat</button>
+        </div>
+
+        <table class="client-table" id="clients-list-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Address</th>
+              <th>Phone</th>
+              <th>Day</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+          <% clients.forEach( el => { %>
+            <tr data-day="<%= el.day %>">
+              <td data-id='<%=el._id%>'><span class='<%= el.completed === true ? 'completed' : 'not'%>'><%= el.name %></span></td>
+              <td><%= el.address %></td>
+              <td><%= el.phone %></td>
+              <td><span class="day-tag <%= el.day %>"><%= el.day %></span></td>
+              <td><a href="/clients/edit/<%= el._id %>" class="client-action-btn edit-btn">Edit</a></td>
+              <td><button type="button" class="client-action-btn delete-btn deleteClient" data-id="<%= el._id %>" data-name="<%= el.name %>">Delete</button></td>
+            </tr>
+          <% }) %>
+          </tbody>
+        </table>
+      </section>
+
+      <%# ------- ADD CLIENT ------%>
+      <section class="card">
+        <form action="/clients/createClient" method="POST" class="client-form">
+          <h2 class="card-title">Add a Client</h2>
+          <div class="form-field">
+            <label for="clientName">Name</label>
+            <input type="text" id="clientName" name="clientName">
+          </div>
+          <div class="form-field">
+            <label for="clientPhone">Phone</label>
+            <input type="text" id="clientPhone" name="clientPhone">
+          </div>
+          <div class="form-field">
+            <label for="clientAddress">Address</label>
+            <input type="text" id="clientAddress" name="clientAddress">
+          </div>
+          <div class="form-field">
+            <label for="clientDay">Day</label>
+            <select id="clientDay" name="clientDay">
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Saturday">Saturday</option>
+            </select>
+          </div>
+          <input type="submit" value="Add Client">
+        </form>
+      </section>
+
+      <%# ------- ROUTE OPTIMIZER ------%>
+      <section class="card">
+        <h2 class="card-title">Get Optimized Route</h2>
+        <div id="day-route-buttons">
+          <button class="route-btn" data-day="Monday">Mon</button>
+          <button class="route-btn" data-day="Tuesday">Tue</button>
+          <button class="route-btn" data-day="Wednesday">Wed</button>
+          <button class="route-btn" data-day="Thursday">Thu</button>
+          <button class="route-btn" data-day="Friday">Fri</button>
+          <button class="route-btn" data-day="Saturday">Sat</button>
+        </div>
+        <div id="route-result"></div>
+      </section>
     </div>
-
-    <table class="client-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Address</th>
-          <th>Phone</th>
-          <th>Day</th>
-          <th>Edit</th>
-          <th>Delete</th>
-        </tr>
-      </thead>
-      <tbody>
-      <% clients.forEach( el => { %>
-        <tr data-day="<%= el.day %>">
-          <td data-id='<%=el._id%>'><span class='<%= el.completed === true ? 'completed' : 'not'%>'><%= el.name %></span></td>
-          <td><%= el.address %></td>
-          <td><%= el.phone %></td>
-          <td><span class="day-tag <%= el.day %>"><%= el.day %></span></td>
-          <td><a href="/clients/edit/<%= el._id %>">Edit</a></td>
-          <td data-id='<%=el._id%>'><span class="deleteClient">Delete</span></td>
-        </tr>
-      <% }) %>
-      </tbody>
-    </table>
-
-    <form action="/clients/createClient" method="POST" class="client-form">
-      <h3>Add a Client</h3>
-      <div class="form-field">
-        <label for="clientName">Name</label>
-        <input type="text" id="clientName" name="clientName">
-      </div>
-      <div class="form-field">
-        <label for="clientPhone">Phone</label>
-        <input type="text" id="clientPhone" name="clientPhone">
-      </div>
-      <div class="form-field">
-        <label for="clientAddress">Address</label>
-        <input type="text" id="clientAddress" name="clientAddress">
-      </div>
-      <div class="form-field">
-        <label for="clientDay">Day</label>
-        <select id="clientDay" name="clientDay">
-          <option value="Monday">Monday</option>
-          <option value="Tuesday">Tuesday</option>
-          <option value="Wednesday">Wednesday</option>
-          <option value="Thursday">Thursday</option>
-          <option value="Friday">Friday</option>
-          <option value="Saturday">Saturday</option>
-        </select>
-      </div>
-      <input type="submit" value="Add Client">
-    </form>
-
-    <a href="/logout">Logout</a>
-
-  <%# ------- ROUTE OPTIMIZER ------%>
-  <div>
-    <h3>Get Optimized Route</h3>
-    <div id="day-route-buttons">
-      <button class="route-btn" data-day="Monday">Mon</button>
-      <button class="route-btn" data-day="Tuesday">Tue</button>
-      <button class="route-btn" data-day="Wednesday">Wed</button>
-      <button class="route-btn" data-day="Thursday">Thu</button>
-      <button class="route-btn" data-day="Friday">Fri</button>
-      <button class="route-btn" data-day="Saturday">Sat</button>
-    </div>
-    <div id="route-result"></div>
-  </div>
 
     <script src="js/main.js"></script>
   </body>
