@@ -38,3 +38,68 @@ h1 {
 .Saturday {
   background-color: fuchsia;
 }
+
+.client-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 320px;
+  margin: 16px 0;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-field label {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.form-field input,
+.form-field select {
+  padding: 6px 8px;
+  font-size: 14px;
+}
+
+#day-filter-tabs {
+  display: flex;
+  gap: 6px;
+  margin: 12px 0;
+}
+
+.filter-tab {
+  border: 1px solid #ccc;
+  background-color: #f2f2f2;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.filter-tab.active {
+  background-color: #333;
+  color: #fff;
+  border-color: #333;
+}
+
+.client-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.client-table th,
+.client-table td {
+  padding: 6px 10px;
+  text-align: left;
+}
+
+.client-table tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.client-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}

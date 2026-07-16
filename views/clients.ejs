@@ -9,19 +9,18 @@
   </head>
   <body>
     <h1>CASAS DASHBOARD</h1>
-     <h2><%= user.userName%> has <%= left%> clients</h2>
-
+     
   <%# ------- TODAY'S ROUTE ------%>
   <div>
     <% if (!validDays.includes(today)) { %>
       <p>No clients scheduled today — enjoy your day off!</p>
     <% } else if (todayRoute.error) { %>
-      <h3>Today's Route (<%= today %>)</h3>
+      <h2>Today's Route (<%= today %>)</h2>
       <p>Error: <%= todayRoute.error %></p>
     <% } else { %>
-      <h3>Today's Route (<%= today %>)</h3>
+      <h2>Today's Route (<%= today %>)</h2>
       <h4><%= today %> — <%= todayRoute.miles %> mi, <%= todayRoute.minutes %> min driving</h4>
-      <table>
+      <table class="client-table">
         <thead><tr><th>#</th><th>Client</th><th>Arrive</th><th>Depart</th></tr></thead>
         <tbody>
         <% todayRoute.schedule.forEach((s, i) => { %>
@@ -33,101 +32,69 @@
     <% } %>
   </div>
 
-    <ul>
-    <% clients.forEach( el => { %>
-            <li class='clientName' data-id='<%=el._id%>'>
-                <span class='<%= el.completed === true ? 'completed' : 'not'%>'><%= el.name %></span>
-                <span><%= el.address %></span>
-                <span><%= el.phone %></span>
-                <span class="day-tag <%= el.day %>"><%= el.day %></span>
-                <a href="/clients/edit/<%= el._id %>">Edit</a>
-                <span class="deleteClient">Delete</span>
-            </li>
-    <% }) %>    
-    </ul>
+  <h2><%= user.userName%> HAS <%= left%> Clients</h2>
 
-  <%# ------- WEEKLY CLIENT LIST ------%>
-<div>
-    <h3>Monday Clients: </h3>
-    <ul>
-      <% mondayClients.forEach( el => { %>
-            <li  data-id='<%=el._id%>'>
-                <span><%= el.name %></span>
-                <span><%= el.address %></span>
-                <span><%= el.phone %></span>
-            </li>
-    <% }) %>    
-    </ul>
+    <div id="day-filter-tabs">
+      <button class="filter-tab active" data-day="All">All</button>
+      <button class="filter-tab" data-day="Monday">Mon</button>
+      <button class="filter-tab" data-day="Tuesday">Tue</button>
+      <button class="filter-tab" data-day="Wednesday">Wed</button>
+      <button class="filter-tab" data-day="Thursday">Thu</button>
+      <button class="filter-tab" data-day="Friday">Fri</button>
+      <button class="filter-tab" data-day="Saturday">Sat</button>
+    </div>
 
-    <h3>Tuesday Clients: </h3>
-    <ul>
-      <% tuesdayClients.forEach( el => { %>
-            <li  data-id='<%=el._id%>'>
-                <span><%= el.name %></span>
-                <span><%= el.address %></span>
-                <span><%= el.phone %></span>
-            </li>
-    <% }) %>    
-    </ul>
+    <table class="client-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Phone</th>
+          <th>Day</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% clients.forEach( el => { %>
+        <tr data-day="<%= el.day %>">
+          <td data-id='<%=el._id%>'><span class='<%= el.completed === true ? 'completed' : 'not'%>'><%= el.name %></span></td>
+          <td><%= el.address %></td>
+          <td><%= el.phone %></td>
+          <td><span class="day-tag <%= el.day %>"><%= el.day %></span></td>
+          <td><a href="/clients/edit/<%= el._id %>">Edit</a></td>
+          <td data-id='<%=el._id%>'><span class="deleteClient">Delete</span></td>
+        </tr>
+      <% }) %>
+      </tbody>
+    </table>
 
-    <h3>Wednesday Clients: </h3>
-    <ul>
-      <% wednesdayClients.forEach( el => { %>
-            <li  data-id='<%=el._id%>'>
-                <span><%= el.name %></span>
-                <span><%= el.address %></span>
-                <span><%= el.phone %></span>
-            </li>
-    <% }) %>    
-    </ul>
-
-    <h3>Thursday Clients: </h3>
-    <ul>
-      <% thursdayClients.forEach( el => { %>
-            <li  data-id='<%=el._id%>'>
-                <span><%= el.name %></span>
-                <span><%= el.address %></span>
-                <span><%= el.phone %></span>
-            </li>
-    <% }) %>    
-    </ul>
-
-    <h3>Friday Clients: </h3>
-    <ul>
-      <% fridayClients.forEach( el => { %>
-            <li  data-id='<%=el._id%>'>
-                <span><%= el.name %></span>
-                <span><%= el.address %></span>
-                <span><%= el.phone %></span>
-            </li>
-    <% }) %>    
-    </ul>
-
-    <h3>Saturday Clients: </h3>
-    <ul>
-      <% saturdayClients.forEach( el => { %>
-            <li  data-id='<%=el._id%>'>
-                <span><%= el.name %></span>
-                <span><%= el.address %></span>
-                <span><%= el.phone %></span>
-            </li>
-    <% }) %>    
-    </ul>
-   </div>
-
-    <form action="/clients/createClient" method="POST">
-      <input type="text" placeholder="Name" name="clientName">
-      <input type="text" placeholder="Phone" name="clientPhone">
-      <input type="text" placeholder="Address" name="clientAddress">
-      <select name="clientDay">
-        <option value="Monday">Monday</option>
-        <option value="Tuesday">Tuesday</option>
-        <option value="Wednesday">Wednesday</option>
-        <option value="Thursday">Thursday</option>
-        <option value="Friday">Friday</option>
-        <option value="Saturday">Saturday</option>
-      </select>
-      <input type="submit">
+    <form action="/clients/createClient" method="POST" class="client-form">
+      <h3>Add a Client</h3>
+      <div class="form-field">
+        <label for="clientName">Name</label>
+        <input type="text" id="clientName" name="clientName">
+      </div>
+      <div class="form-field">
+        <label for="clientPhone">Phone</label>
+        <input type="text" id="clientPhone" name="clientPhone">
+      </div>
+      <div class="form-field">
+        <label for="clientAddress">Address</label>
+        <input type="text" id="clientAddress" name="clientAddress">
+      </div>
+      <div class="form-field">
+        <label for="clientDay">Day</label>
+        <select id="clientDay" name="clientDay">
+          <option value="Monday">Monday</option>
+          <option value="Tuesday">Tuesday</option>
+          <option value="Wednesday">Wednesday</option>
+          <option value="Thursday">Thursday</option>
+          <option value="Friday">Friday</option>
+          <option value="Saturday">Saturday</option>
+        </select>
+      </div>
+      <input type="submit" value="Add Client">
     </form>
 
     <a href="/logout">Logout</a>

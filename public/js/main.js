@@ -144,6 +144,20 @@ document.querySelectorAll(".route-btn").forEach((btn) => {
   });
 });
 
+// --- Client table day filter tabs ---
+
+document.querySelectorAll(".filter-tab").forEach((tab) => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".filter-tab").forEach((t) => t.classList.remove("active"));
+    tab.classList.add("active");
+
+    const day = tab.dataset.day;
+    document.querySelectorAll(".client-table tbody tr").forEach((row) => {
+      row.style.display = day === "All" || row.dataset.day === day ? "" : "none";
+    });
+  });
+});
+
 async function delClient() {
   const clientId = this.parentNode.dataset.id;
   try {
