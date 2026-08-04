@@ -158,6 +158,66 @@ document.querySelectorAll(".filter-tab").forEach((tab) => {
   });
 });
 
+//// functions for client lists ///
+
+const deleteListBtns = document.querySelectorAll(".deleteList");
+const saveListClientsBtn = document.querySelector(".saveListClients");
+const listClientSearch = document.getElementById("list-client-search");
+
+Array.from(deleteListBtns).forEach((el) => {
+  el.addEventListener("click", deleteList);
+});
+
+if (saveListClientsBtn) {
+  saveListClientsBtn.addEventListener("click", saveListClients);
+}
+
+if (listClientSearch) {
+  listClientSearch.addEventListener("input", () => {
+    const query = listClientSearch.value.trim().toLowerCase();
+    document.querySelectorAll(".list-client-row").forEach((row) => {
+      row.style.display = row.dataset.name.includes(query) ? "" : "none";
+    });
+  });
+}
+
+async function deleteList() {
+  const listId = this.dataset.id;
+  const listName = this.dataset.name;
+  if (!confirm(`Delete list "${listName}"? This can't be undone.`)) {
+    return;
+  }
+  try {
+    const response = await fetch(`/lists/${listId}`, {
+      method: "delete",
+      headers: { "Content-type": "application/json" },
+    });
+    const data = await response.json();
+    console.log(data);
+    location.reload();
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function saveListClients() {
+  const listId = this.dataset.id;
+  const checked = document.querySelectorAll("input[name='clientIds']:checked");
+  const clientIds = Array.from(checked).map((cb) => cb.value);
+  try {
+    const response = await fetch(`/lists/${listId}/clients`, {
+      method: "put",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({ clientIds }),
+    });
+    const data = await response.json();
+    console.log(data);
+    location.reload();
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 async function delClient() {
   const clientId = this.dataset.id;
   const clientName = this.dataset.name;

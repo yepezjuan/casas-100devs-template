@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CASAS - <%= list.name %></title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <div class="dashboard">
+      <header class="dashboard-header">
+        <h1><%= list.name %></h1>
+        <div class="header-links">
+          <a href="/lists" class="nav-link">All Lists</a>
+          <a href="/clients" class="nav-link">Dashboard</a>
+          <a href="/logout" class="logout-link">Logout</a>
+        </div>
+      </header>
+
+      <section class="card">
+        <h2 class="card-title">Add / Remove Clients</h2>
+
+        <input type="text" id="list-client-search" placeholder="Search clients by name...">
+
+        <h3 class="list-section-title">Clients Included In This List</h3>
+        <table class="client-table" id="list-clients-table-members">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Name</th>
+              <th>Address</th>
+              <th>Phone</th>
+              <th>Day</th>
+            </tr>
+          </thead>
+          <tbody>
+          <% const memberClients = clients.filter(el => memberIds.includes(el._id.toString())); %>
+          <% if (memberClients.length === 0) { %>
+            <tr class="empty-row"><td colspan="5">No clients in this list yet.</td></tr>
+          <% } %>
+          <% memberClients.forEach( el => { %>
+            <tr class="list-client-row" data-name="<%= el.name.toLowerCase() %>">
+              <td><input type="checkbox" name="clientIds" value="<%= el._id %>" checked></td>
+              <td><%= el.name %></td>
+              <td><%= el.address %></td>
+              <td><%= el.phone %></td>
+              <td><span class="day-tag <%= el.day %>"><%= el.day %></span></td>
+            </tr>
+          <% }) %>
+          </tbody>
+        </table>
+
+        <h3 class="list-section-title">Clients Not Included In This List</h3>
+        <table class="client-table" id="list-clients-table-others">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Name</th>
+              <th>Address</th>
+              <th>Phone</th>
+              <th>Day</th>
+            </tr>
+          </thead>
+          <tbody>
+          <% const otherClients = clients.filter(el => !memberIds.includes(el._id.toString())); %>
+          <% if (otherClients.length === 0) { %>
+            <tr class="empty-row"><td colspan="5">All clients incuded in this list.</td></tr>
+          <% } %>
+          <% otherClients.forEach( el => { %>
+            <tr class="list-client-row" data-name="<%= el.name.toLowerCase() %>">
+              <td><input type="checkbox" name="clientIds" value="<%= el._id %>"></td>
+              <td><%= el.name %></td>
+              <td><%= el.address %></td>
+              <td><%= el.phone %></td>
+              <td><span class="day-tag <%= el.day %>"><%= el.day %></span></td>
+            </tr>
+          <% }) %>
+          </tbody>
+        </table>
+
+        <button type="button" class="client-action-btn edit-btn saveListClients" data-id="<%= list._id %>">Save Changes</button>
+      </section>
+    </div>
+
+    <script src="/js/main.js"></script>
+  </body>
+</html>

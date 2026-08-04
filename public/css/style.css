@@ -31,6 +31,18 @@ h1 {
   color: #555;
 }
 
+.header-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-link {
+  font-size: 14px;
+  color: #4a90d9;
+  text-decoration: none;
+}
+
 .card {
   background-color: #fff;
   border: 1px solid #e2e2e2;
@@ -106,6 +118,15 @@ h1 {
   font-size: 14px;
 }
 
+#list-client-search {
+  width: 100%;
+  max-width: 320px;
+  padding: 6px 8px;
+  font-size: 14px;
+  margin: 12px 0;
+  box-sizing: border-box;
+}
+
 #day-filter-tabs {
   display: flex;
   gap: 6px;
@@ -127,9 +148,20 @@ h1 {
   border-color: #333;
 }
 
+.list-section-title {
+  margin: 20px 0 8px;
+  font-size: 15px;
+  color: #4a4a4a;
+}
+
 .client-table {
   border-collapse: collapse;
   width: 100%;
+}
+
+.empty-row td {
+  color: #888;
+  font-style: italic;
 }
 
 .client-table th,

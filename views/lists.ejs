@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CASAS - Client Lists</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <div class="dashboard">
+      <header class="dashboard-header">
+        <h1>CLIENT LISTS</h1>
+        <div class="header-links">
+          <a href="/clients" class="nav-link">Dashboard</a>
+          <a href="/logout" class="logout-link">Logout</a>
+        </div>
+      </header>
+
+      <%# ------- EXISTING LISTS ------%>
+      <section class="card">
+        <h2 class="card-title">Your Lists</h2>
+
+        <% if (lists.length === 0) { %>
+          <p>You haven't created any lists yet.</p>
+        <% } else { %>
+          <table class="client-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Clients</th>
+                <th>Open</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+            <% lists.forEach( el => { %>
+              <tr>
+                <td><%= el.name %></td>
+                <td><%= el.clientIds.length %></td>
+                <td><a href="/lists/<%= el._id %>" class="client-action-btn edit-btn">Open</a></td>
+                <td><button type="button" class="client-action-btn delete-btn deleteList" data-id="<%= el._id %>" data-name="<%= el.name %>">Delete</button></td>
+              </tr>
+            <% }) %>
+            </tbody>
+          </table>
+        <% } %>
+      </section>
+
+      <%# ------- CREATE LIST ------%>
+      <section class="card">
+        <form action="/lists/create" method="POST" class="client-form">
+          <h2 class="card-title">Create a New List</h2>
+          <div class="form-field">
+            <label for="listName">List Name</label>
+            <input type="text" id="listName" name="listName">
+          </div>
+          <input type="submit" value="Create List">
+        </form>
+      </section>
+    </div>
+
+    <script src="/js/main.js"></script>
+  </body>
+</html>
